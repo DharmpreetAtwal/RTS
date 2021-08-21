@@ -3,7 +3,7 @@ package application;
 import java.util.Set;
 
 import application.gameObject.GameObject;
-import application.gameObject.Placable;
+import application.inter.Placable;
 import javafx.event.EventHandler;
 import javafx.scene.ParallelCamera;
 import javafx.scene.Scene;
@@ -13,32 +13,35 @@ public class Player {
 	private ParallelCamera camera;
 	private boolean[] playerState = {false, false, false, false, false, false, false}; //	North, South, West, East, running
 	private int money; 
-	private String colour = "BLACK";
+	private String colour;
 	private Set<GameObject> selected;
 	private Set<Placable> placed;
 	
-	public Player(Scene scene) {
+	public Player(Scene scene, String colour) {
 		this.camera = new ParallelCamera();
+		this.colour = colour;
 		initKeyActions(scene);
-		
-		this.camera.setOnZoom(e->{
-			
-		});
 	}
 
-//	public void updateCamera(int dx, int dy) {
-//		this.camera.setLayoutX(this.camera.getLayoutX() + dx);
-//		this.camera.setLayoutY(this.camera.getLayoutY() + dy);
-//		
-//		if(this.playerState[5]) {
-//
-////			this.camera.setTranslateZ(this.camera.getTranslateZ() - 10);
-//		} 
-//		
-//		if (this.playerState[6]) {
-////			this.camera.setTranslateZ(this.camera.getTranslateZ() + 10);
-//		}
-//	}
+	public void updateCamera(int dx, int dy) {
+		this.camera.setLayoutX(this.camera.getLayoutX() + dx);
+		this.camera.setLayoutY(this.camera.getLayoutY() + dy);
+		
+		
+		if(this.camera.getScaleX() - 0.5 >= 1.0) {
+			if(this.playerState[5]) {
+				this.camera.setScaleX(this.camera.getScaleX() - 0.5);
+				this.camera.setScaleY(this.camera.getScaleY() - 0.5);
+				
+			} 
+		}
+		
+		if (this.playerState[6]) {
+			this.camera.setScaleX(this.camera.getScaleX() + 0.5);
+			this.camera.setScaleY(this.camera.getScaleY() + 0.5);
+		}
+		
+	}
 	
 	public void initKeyActions(Scene scene) {
 		boolean[] playerSta = this.playerState;

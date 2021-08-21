@@ -1,5 +1,7 @@
 package application;
 	
+import application.gameObject.unit.HeavySoldier;
+import application.gameObject.unit.Soldier;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -18,14 +20,20 @@ public class Main extends Application {
 		rect.setFill(javafx.scene.paint.Color.RED);
 		root.getChildren().add(rect);
 		
-		Player player = new Player(scene);
+		Player player = new Player(scene, "Black");
 		scene.setCamera(player.getCamera());
 		initTimer(player);
+		
+		Soldier soldier = new Soldier(200, 200, player);
+		root.getChildren().add(soldier.getGroup());
+		
+		HeavySoldier hsoldier = new HeavySoldier(300, 300, player);
+		root.getChildren().add(hsoldier.getGroup());
+		hsoldier.setAngle(45);
 		
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		primaryStage.setScene(scene);
 		primaryStage.show();
-
 	}
 	
 	private void initTimer(Player player) {
@@ -34,14 +42,14 @@ public class Main extends Application {
 			@Override
 			public void handle(long now) {
 				int dx=0, dy=0;
-				if(keys[0]) dy -= 1;
-				if(keys[1]) dy += 1;
-				if(keys[2]) dx -= 1;
-				if(keys[3]) dx += 1;
-                if(keys[4]) {dx *= 3; dy *= 3;}
-                
-                System.out.println(dx + " " + dy);
-                
+				if(keys[0]) dy -= player.getCamera().getScaleY();
+				if(keys[1]) dy += player.getCamera().getScaleY();
+				if(keys[2]) dx -= player.getCamera().getScaleX();
+				if(keys[3]) dx += player.getCamera().getScaleX();
+                if(keys[4]) {dx *= player.getCamera().getScaleX(); 
+                			dy *= player.getCamera().getScaleY();
+                			}
+                                
                 player.updateCamera(dx, dy);
 			}
 		};
