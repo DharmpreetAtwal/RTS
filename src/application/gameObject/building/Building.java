@@ -1,9 +1,39 @@
 package application.gameObject.building;
 
-public abstract class Building {
+import application.Player;
+import application.gameObject.GameObject;
 
-	public Building() {
-		// TODO Auto-generated constructor stub
+public abstract class Building extends GameObject {
+	private Player ownedBy;
+	private int health;
+	private int cost;
+	
+	public Building(int x, int y) {
+		super(x, y);
+	}
+
+	public Player getOwnedBy() {
+		return ownedBy;
+	}
+
+	public void setOwnedBy(Player ownedBy) {
+		this.ownedBy = ownedBy;
+	}
+
+	public int getHealth() {
+		return health;
+	}
+
+	public void setHealth(int health) {
+		this.health = health;
+	}
+
+	public int getCost() {
+		return cost;
+	}
+
+	public void setCost(int cost) {
+		this.cost = cost;
 	}
 
 }
