@@ -4,6 +4,9 @@ import application.Player;
 import application.gameObject.GameObject;
 import application.inter.Placable;
 import javafx.scene.shape.Circle;
+import javafx.util.Duration;
+import javafx.animation.TranslateTransition;
+import javafx.scene.input.MouseEvent;
 
 public abstract class Unit extends GameObject implements Placable {
 	private Player ownedBy;
@@ -12,10 +15,34 @@ public abstract class Unit extends GameObject implements Placable {
 	private GameObject target;
 	private int health;
 	private int cost;
+	private int speed = 1;
 	
-	public Unit(int x, int y) {
+	public Unit(int x, int y, int speed) {
 		super(x, y);
 	}
+        
+        public void move(MouseEvent e, int offset) {
+            TranslateTransition translate = new TranslateTransition();
+            double oldPosX = this.getImage().getTranslateX();
+            double oldPosY = this.getImage().getTranslateY();
+            double newPosX = e.getX() - this.getInitX() + offset;
+            double newPosY = e.getY() - this.getInitX() + offset;
+            
+            double dist = Math.sqrt(Math.pow(oldPosX - newPosX, 2) + Math.pow(oldPosY - newPosY, 2));
+            Duration dur = new Duration(dist / this.speed);
+            
+            translate.setByX(1);
+            translate.setByY(1);
+            translate.setDuration(dur);
+            translate.setFromX(oldPosX);
+            translate.setFromY(oldPosY);
+            translate.setToX(newPosX);
+            translate.setToY(newPosY);
+            translate.setCycleCount(1);  
+            translate.setAutoReverse(false);  
+            translate.setNode(this.getImage());
+            translate.play();
+        }
 
 	public Player getOwnedBy() {
 		return ownedBy;

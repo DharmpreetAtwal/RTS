@@ -13,10 +13,14 @@ public class GameObject {
 	private Translate translate = new Translate(0, 0);
 	private Rotate rotate = new Rotate(0, 0, 0);
 	private Shape image;
+	private final int initX;
+	private final int initY;
 
 	public GameObject(int x, int y) {
 		this.group.getTransforms().addAll(translate, rotate);
 		gameObjectSet.add(this);
+		this.initX = x;
+		this.initY = y;
 		this.setX(x);
 		this.setY(y);
 	}
@@ -76,6 +80,14 @@ public class GameObject {
 	
 	public double getAngle() {
 		return this.rotate.getAngle();
+	}
+
+	public int getInitX() {
+		return initX;
+	}
+
+	public int getInitY() {
+		return initY;
 	}
 
 }

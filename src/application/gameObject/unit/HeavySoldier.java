@@ -5,8 +5,8 @@ import javafx.scene.shape.Rectangle;
 
 public class HeavySoldier extends Unit {
 
-	public HeavySoldier(int x, int y, Player ownedBy) {
-		super(x, y);
+	public HeavySoldier(int x, int y, int speed, Player ownedBy) {
+		super(x, y, speed);
 		Rectangle image = new Rectangle();
 		image.setFill(javafx.scene.paint.Color.valueOf(ownedBy.getColour()));
 		image.setWidth(50);

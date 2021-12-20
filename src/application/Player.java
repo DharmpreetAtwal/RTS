@@ -1,6 +1,6 @@
 package application;
 
-import java.util.Set;
+import java.util.HashSet;
 
 import application.gameObject.GameObject;
 import application.inter.Placable;
@@ -14,8 +14,8 @@ public class Player {
 	private boolean[] playerState = {false, false, false, false, false, false, false}; //	North, South, West, East, running
 	private int money; 
 	private String colour;
-	private Set<GameObject> selected;
-	private Set<Placable> placed;
+	private HashSet<GameObject> selected = new HashSet<GameObject>();
+	private HashSet<Placable> placed;
 	
 	public Player(Scene scene, String colour) {
 		this.camera = new ParallelCamera();
@@ -114,19 +114,19 @@ public class Player {
 		this.colour = colour;
 	}
 
-	public Set<GameObject> getSelected() {
+	public HashSet<GameObject> getSelected() {
 		return selected;
 	}
 
-	public void setSelected(Set<GameObject> selected) {
+	public void setSelected(HashSet<GameObject> selected) {
 		this.selected = selected;
 	}
 
-	public Set<Placable> getPlaced() {
+	public HashSet<Placable> getPlaced() {
 		return placed;
 	}
 
-	public void setPlaced(Set<Placable> placed) {
+	public void setPlaced(HashSet<Placable> placed) {
 		this.placed = placed;
 	}
 
