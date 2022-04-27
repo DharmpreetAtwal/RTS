@@ -3,6 +3,7 @@ package application.gameObject;
 import java.util.HashSet;
 
 import javafx.scene.Group;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Shape;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
@@ -21,8 +22,9 @@ public class GameObject {
 		gameObjectSet.add(this);
 		this.initX = x;
 		this.initY = y;
-		this.setX(x);
-		this.setY(y);
+
+//		this.setX(x);
+//		this.setY(y);
 	}
 
 	public Group getGroup() {
@@ -58,20 +60,32 @@ public class GameObject {
 		this.image = image;
 	}
 
-	public int getX() {
-		return (int) this.translate.getX();
+	public double getImageX() {
+		return this.image.getTranslateX();
+	}
+	
+	public double getImageY() {
+		return this.image.getTranslateY();
+	}
+	
+	public Paint getImageFill() {
+		return this.image.getFill();
+	} 
+	
+	public double getX() {
+		return this.image.getTranslateX();
+	}
+	
+	public void setX(double x) {
+		this.image.setTranslateX(x);
 	}
 
-	public void setX(int x) {
-		this.translate.setX(x);
+	public double getY() {
+		return this.image.getTranslateY();
 	}
 
-	public int getY() {
-		return (int) this.translate.getY();
-	}
-
-	public void setY(int y) {
-		this.translate.setY(y);
+	public void setY(double y) {
+		this.image.setTranslateX(y);
 	}
 	
 	public void setAngle(double angle) {

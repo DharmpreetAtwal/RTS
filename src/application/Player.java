@@ -22,6 +22,10 @@ public class Player {
 		this.colour = colour;
 		initKeyActions(scene);
 	}
+	 
+	public Player (String colour) {
+		this.colour = colour;
+	}
 
 	public void updateCamera(int dx, int dy) {
 		this.camera.setLayoutX(this.camera.getLayoutX() + dx);

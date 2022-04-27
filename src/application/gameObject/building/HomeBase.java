@@ -10,9 +10,15 @@ public class HomeBase extends Building {
 		
 		Rectangle image = new Rectangle(100, 100);
 		image.setFill(javafx.scene.paint.Color.valueOf(ownedBy.getColour()));
+		image.setTranslateX(x);
+		image.setTranslateY(y);
 		
 		this.setImage(image);
 		this.getGroup().getChildren().add(this.getImage());
 	}
 
+	public String toString() {
+		return this.getImageFill() + " Home Base";
+	}
+	
 }
