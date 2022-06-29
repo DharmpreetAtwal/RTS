@@ -4,9 +4,10 @@ import java.util.Iterator;
 
 import application.gameObject.GameObject;
 import application.gameObject.building.HomeBase;
-import application.gameObject.unit.Unit;
-import application.gameObject.unit.HeavySoldier;
-import application.gameObject.unit.Soldier;
+import application.gameObject.entity.unit.Unit;
+import application.gameObject.entity.unit.Entity;
+import application.gameObject.entity.unit.HeavySoldier;
+import application.gameObject.entity.unit.Soldier;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -17,9 +18,11 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
 public class Main extends Application {
+	public static BorderPane root;
+	
 	@Override
 	public void start(Stage primaryStage) {
-            BorderPane root = new BorderPane();
+            root = new BorderPane();
             Scene scene = new Scene(root,1000,1000);
 
             Player player = new Player(scene, "Black");
@@ -116,14 +119,13 @@ public class Main extends Application {
 			
 	private void checkUnitInteraction() {
 		 Iterator<Unit> iterUnit = Unit.unitSet.iterator();
-
          while(iterUnit.hasNext()) {
-    		 Iterator<GameObject> iterObj = GameObject.gameObjectSet.iterator();
              Unit unit = iterUnit.next();
     		 double unitX = unit.getX();
-    		 double unitY = unit.getY();
-    		 
-             if (unit.getTarget() != null) {
+    		 double unitY = unit.getY();		 
+          	
+             if (unit.getTarget() != null && unit.getTarget().getHealth() > 0) {
+            	 unit.shoot();
         		 double tarX = unit.getTarget().getX();
         		 double tarY = unit.getTarget().getY();
 
@@ -131,10 +133,13 @@ public class Main extends Application {
         		 if (dist > unit.getFovRadius()) {
         			 unit.setTarget(null);
         		 }
-             } 
+             } else if(unit.getTarget() != null && unit.getTarget().getHealth() == 0) {
+          		unit.setTarget(null);
+             }
              
-             while(iterObj.hasNext()) {
-            	 GameObject obj = iterObj.next();
+    		 Iterator<Entity> iterEntity = Entity.entitySet.iterator();
+             while(iterEntity.hasNext()) {
+            	 Entity obj = iterEntity.next();
             	 if(!unit.equals(obj) && unit.getTarget() == null) {
             		 double objX = obj.getX();
             		 double objY = obj.getY();
@@ -142,9 +147,6 @@ public class Main extends Application {
             		 double dist = Math.sqrt(Math.pow(objX - unitX, 2) + Math.pow(objY - unitY, 2));
             		 if (dist <= unit.getFovRadius() && unit.getImageFill() != obj.getImageFill()) {
             			 unit.setTarget(obj);
-                		 System.out.println(unit.toString() + " -> " + unit.getTarget().toString());
-                		 System.out.println(dist);
-
             		 } 
             		 
             	 } 
