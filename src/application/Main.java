@@ -10,95 +10,116 @@ import application.gameObject.entity.unit.HeavySoldier;
 import application.gameObject.entity.unit.Soldier;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.geometry.Point2D;
 import javafx.stage.Stage;
+import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.SceneAntialiasing;
+import javafx.scene.SubScene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
 public class Main extends Application {
-	public static BorderPane root;
-	
+	public static Group root;
 	@Override
 	public void start(Stage primaryStage) {
-            root = new BorderPane();
-            Scene scene = new Scene(root,1000,1000);
+        Player player = new Player("Black");
+        
+        root = new Group(player.getCamera());
+        
+	    SubScene subScene = new SubScene(root, 2000, 2000, true, SceneAntialiasing.BALANCED);
+	    subScene.setFill(Color.AQUAMARINE);
+        subScene.setCamera(player.getCamera());
+        initTimer(player);
+        
+	    // 2D
+	    BorderPane hud = new BorderPane();
+	    hud.setCenter(subScene);
+	    Button btn = new Button("Reset");
+	    btn.setPrefSize(100, 100);
+	    hud.setLeft(btn);
+	    Scene scene = new Scene(hud);
+        player.initKeyActions(scene);
 
-            Player player = new Player(scene, "Black");
-            scene.setCamera(player.getCamera());
-            initTimer(player);
-            
-            HomeBase hmbs = new HomeBase(50, 50, player);
-            Soldier soldier = new Soldier(200, 200, player);
-            HeavySoldier hsoldier = new HeavySoldier(300, 300, player);
-            
-            Player player_two = new Player("Orange");
-            HomeBase hmbs_two = new HomeBase(1600, 50, player_two);
-            Soldier soldier_two = new Soldier(1300, 100, player_two);
-            HeavySoldier hsoldier_two = new HeavySoldier(1300, 300, player_two);
+        HomeBase hmbs = new HomeBase(50, 50, player);
+        Soldier soldier = new Soldier(200, 200, player);
+        HeavySoldier hsoldier = new HeavySoldier(300, 300, player);
+        
+        Player player_two = new Player("Orange");
+        HomeBase hmbs_two = new HomeBase(1600, 50, player_two);
+        Soldier soldier_two = new Soldier(1300, 100, player_two);
+        HeavySoldier hsoldier_two = new HeavySoldier(1300, 300, player_two);
 
-            Iterator<GameObject> iter = GameObject.gameObjectSet.iterator();
-            while(iter.hasNext()) {
-                GameObject obj = iter.next();
-                root.getChildren().add(obj.getGroup());
-            }
-            
-            Rectangle select = new Rectangle(100, 100);
-            select.setFill(javafx.scene.paint.Color.GREY);
-            select.setOpacity(0.2);
-            root.getChildren().add(select);
-            initMouseEvents(scene, player, select);
-
-//            scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-            primaryStage.setScene(scene);
-            primaryStage.show();
+        Iterator<GameObject> iter = GameObject.gameObjectSet.iterator();
+        while(iter.hasNext()) {
+            GameObject obj = iter.next();
+            root.getChildren().add(obj.getGroup());
+        }
+        
+        Rectangle select = new Rectangle(100, 100);
+        select.setFill(javafx.scene.paint.Color.GREY);
+        select.setOpacity(0.2);
+        root.getChildren().add(select);
+        initMouseEvents(subScene, player, select);
+                    
+        primaryStage.setScene(scene);
+        primaryStage.show();
 	}
 
 	private void initTimer(Player player) {
-            AnimationTimer timer = new AnimationTimer() {
-                boolean[] keys = player.getPlayerState();
-                @Override
-                public void handle(long now) {
-                    int dx=0, dy=0;
-                    if(keys[0]) dy -= player.getCamera().getScaleY();
-                    if(keys[1]) dy += player.getCamera().getScaleY();
-                    if(keys[2]) dx -= player.getCamera().getScaleX();
-                    if(keys[3]) dx += player.getCamera().getScaleX();
-                    if(keys[4]) {dx *= 2 + player.getCamera().getScaleX(); 
-                                 dy *= 2 + player.getCamera().getScaleY();}
+        AnimationTimer timer = new AnimationTimer() {
+            boolean[] keys = player.getPlayerState();
+            @Override
+            public void handle(long now) {
+                int dx=0, dy=0;
+                if(keys[0]) dy -= player.getCamera().getScaleY();
+                if(keys[1]) dy += player.getCamera().getScaleY();
+                if(keys[2]) dx -= player.getCamera().getScaleX();
+                if(keys[3]) dx += player.getCamera().getScaleX();
+                if(keys[4]) {dx *= 2 + player.getCamera().getScaleX(); 
+                             dy *= 2 + player.getCamera().getScaleY();}
 
-                    player.updateCamera(dx, dy);
-                    checkUnitInteraction();
-                }
-                
-            };
-            timer.start();
+                player.updateCamera(dx, dy);
+                checkUnitInteraction();
+            }
+            
+        };
+        timer.start();
 	}
 	
-	private void initMouseEvents(Scene scene, Player player, Rectangle select) {
-		scene.setOnMouseReleased(e->{
+	private void initMouseEvents(SubScene subScene, Player player, Rectangle select) {		
+		subScene.setOnMouseReleased(e->{
 	        Iterator<GameObject> iterSelected = player.getSelected().iterator();
+
 	        int offset = 0;
-	
+	        Point2D p = player.getCamera().localToScene(e.getScreenX() - 100, e.getScreenY() - 50);
+
 	        while(iterSelected.hasNext()) {
 	            GameObject obj = iterSelected.next();
 	            if (obj instanceof Unit) {
-	            	((Unit)obj).move(e, offset);
+	            	((Unit)obj).move(p.getX(), p.getY(), offset);
 	                offset = offset + 55;
 	            }
 	        }
         });
 
-        scene.setOnMousePressed(e->{
+        subScene.setOnMousePressed(e->{
+	        Point2D p = player.getCamera().localToScene(e.getScreenX() - 100, e.getScreenY() - 50);
+
         	select.setOpacity(0.0);
-            select.setTranslateX(e.getX());
-            select.setTranslateY(e.getY());
+            select.setTranslateX(p.getX());
+            select.setTranslateY(p.getY());
         });
         
-        scene.setOnMouseDragged(e->{
-            double x = Math.abs(select.getTranslateX() - e.getX());
-            double y = Math.abs(select.getTranslateY() - e.getY());
+        subScene.setOnMouseDragged(e->{
+	        Point2D p = player.getCamera().localToScene(e.getScreenX() - 100, e.getScreenY() - 50);
+
+            double x = Math.abs(select.getTranslateX() - p.getX());
+            double y = Math.abs(select.getTranslateY() - p.getY());
             
             select.setWidth(x);
             select.setHeight(y);

@@ -7,6 +7,7 @@ import application.inter.Placable;
 import javafx.event.EventHandler;
 import javafx.scene.ParallelCamera;
 import javafx.scene.Scene;
+import javafx.scene.SubScene;
 import javafx.scene.input.KeyEvent;
 
 public class Player {
@@ -24,13 +25,13 @@ public class Player {
 	}
 	 
 	public Player (String colour) {
+		this.camera = new ParallelCamera();
 		this.colour = colour;
 	}
 
 	public void updateCamera(int dx, int dy) {
 		this.camera.setLayoutX(this.camera.getLayoutX() + dx);
 		this.camera.setLayoutY(this.camera.getLayoutY() + dy);
-		
 		
 		if(this.camera.getScaleX() - 0.5 >= 1.0) {
 			if(this.playerState[5]) {
