@@ -25,12 +25,12 @@ public abstract class Unit extends Entity implements Placable, Runnable {
 		unitSet.add(this);
 	}
         
-    public void move(MouseEvent e, int offset) {        	
+    public void move(double x, double y, int offset) {        	
         TranslateTransition translate = new TranslateTransition();
         double oldPosX = this.getImage().getTranslateX();
         double oldPosY = this.getImage().getTranslateY();
-        double newPosX = e.getX() + offset;
-        double newPosY = e.getY() + offset;
+        double newPosX = x + offset;
+        double newPosY = y + offset;
         
         double dist = Math.sqrt(Math.pow(oldPosX - newPosX, 2) + Math.pow(oldPosY - newPosY, 2));
         Duration dur = new Duration(dist / this.speed);
