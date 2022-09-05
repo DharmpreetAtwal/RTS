@@ -21,6 +21,7 @@ public abstract class GameObject {
 	public GameObject(int x, int y) {
 		this.group.getTransforms().addAll(translate, rotate);
 		gameObjectSet.add(this);
+		Main.root.getChildren().add(this.getGroup());
 	}
 	
 	public abstract void hit(int damage);
@@ -82,14 +83,6 @@ public abstract class GameObject {
 		this.image = image;
 	}
 
-//	public double getImageX() {
-//		return this.image.getTranslateX();
-//	}
-//	
-//	public double getImageY() {
-//		return this.image.getTranslateY();
-//	}
-	
 	public Paint getImageFill() {
 		return this.image.getFill();
 	} 

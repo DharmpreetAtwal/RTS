@@ -50,8 +50,8 @@ public abstract class Unit extends Entity implements Placable, Runnable {
     
     public void shoot() {		
     	if (this.target != null && !this.isFiring()) {
-	    	double x = this.getX() - this.target.getX();
-	    	double y = this.getY() - this.target.getY();
+	    	double x = this.getCenterX() - this.target.getCenterX();
+	    	double y = this.getCenterY() - this.target.getCenterY();
 	    	double angle = Math.atan(y/x);
 			if (x >= 0  && y <=0) {
 				angle = 180 + Math.toDegrees(angle);
@@ -61,7 +61,7 @@ public abstract class Unit extends Entity implements Placable, Runnable {
 				angle = Math.toDegrees(angle);
 			}	
 			
-	    	Bullet b = new Bullet(this, 10, this.fovRadius, angle, this.getImage().getTranslateX(), this.getImage().getTranslateY());
+	    	Bullet b = new Bullet(this, 10, this.fovRadius, angle, this.getX(), this.getY());
 			Thread thread = new Thread(this);
 			thread.start();
     	}
@@ -78,9 +78,8 @@ public abstract class Unit extends Entity implements Placable, Runnable {
 		}
 		
 		this.setFiring(false);
-
 	}
-
+	
 	public int getFovRadius() {
 		return fovRadius;
 	}

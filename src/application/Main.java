@@ -18,6 +18,7 @@ import javafx.scene.SceneAntialiasing;
 import javafx.scene.SubScene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
@@ -38,27 +39,19 @@ public class Main extends Application {
         
 	    // 2D
 	    BorderPane hud = new BorderPane();
+	    VBox vbox = initHUD(player);
 	    hud.setCenter(subScene);
-	    Button btn = new Button("Reset");
-	    btn.setPrefSize(100, 100);
-	    hud.setLeft(btn);
+	    hud.setLeft(vbox);
+
 	    Scene scene = new Scene(hud);
         player.initKeyActions(scene);
 
         HomeBase hmbs = new HomeBase(50, 50, player);
-        Soldier soldier = new Soldier(200, 200, player);
-        HeavySoldier hsoldier = new HeavySoldier(300, 300, player);
         
         Player player_two = new Player("Orange");
         HomeBase hmbs_two = new HomeBase(1600, 50, player_two);
         Soldier soldier_two = new Soldier(1300, 100, player_two);
         HeavySoldier hsoldier_two = new HeavySoldier(1300, 300, player_two);
-
-        Iterator<GameObject> iter = GameObject.gameObjectSet.iterator();
-        while(iter.hasNext()) {
-            GameObject obj = iter.next();
-            root.getChildren().add(obj.getGroup());
-        }
         
         Rectangle select = new Rectangle(100, 100);
         select.setFill(javafx.scene.paint.Color.GREY);
@@ -102,7 +95,7 @@ public class Main extends Application {
 	            GameObject obj = iterSelected.next();
 	            if (obj instanceof Unit) {
 	            	((Unit)obj).move(p.getX(), p.getY(), offset);
-	                offset = offset + 55;
+	                offset = offset + 30;
 	            }
 	        }
         });
@@ -176,8 +169,25 @@ public class Main extends Application {
              
      }
 	
+	public VBox initHUD(Player player) {
+	    Button solBtn = new Button("Soldier");
+	    Button hSolBtn = new Button("H Soldier"); 
+	    solBtn.setPrefSize(100, 100);
+	    hSolBtn.setPrefSize(100, 100);
+	    
+	    solBtn.setOnMousePressed(e->{
+	        new Soldier(200, 200, player);
+	    });
+	    
+	    hSolBtn.setOnMousePressed(e->{
+	    	new HeavySoldier(200, 200, player);
+	    });
+
+		return new VBox(solBtn, hSolBtn);
+	}
 	
 	public static void main(String[] args) {
 		launch(args);
 	}
+	
 }

@@ -13,8 +13,8 @@ public class HeavySoldier extends Unit {
 	
 		Rectangle image = new Rectangle();
 		image.setFill(javafx.scene.paint.Color.valueOf(ownedBy.getColour()));
-		image.setWidth(50);
-		image.setHeight(50);
+		image.setWidth(25);
+		image.setHeight(25);
 		image.setTranslateX(x);
 		image.setTranslateY(y);
 		

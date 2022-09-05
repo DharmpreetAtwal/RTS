@@ -22,5 +22,5 @@ public class HomeBase extends Building {
 	public String toString() {
 		return this.getImageFill() + " Home Base";
 	}
-	
+
 }

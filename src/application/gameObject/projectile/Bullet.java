@@ -12,7 +12,7 @@ public class Bullet extends Projectile {
 
 	public Bullet(Unit unit, int damage, float projectileSpeed, double angle, double x, double y) {
         this.setProjectileSpeed(projectileSpeed);
-        Rectangle image = new Rectangle(0, 0, 10, 10);
+        Rectangle image = new Rectangle(0, 0, 15, 15);
         image.setFill(javafx.scene.paint.Color.RED);
         image.setRotate(angle);
         this.setImage(image);
