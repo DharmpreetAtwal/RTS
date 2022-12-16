@@ -25,4 +25,10 @@ public class HeavySoldier extends Unit {
 	public String toString() {
 		return this.getImageFill() + " Heavy Soldier";
 	}
+
+	@Override
+	public void hit(int damage) {
+		// TODO Auto-generated method stub
+		
+	}
 }

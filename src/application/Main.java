@@ -26,16 +26,15 @@ import javafx.scene.shape.Shape;
 
 public class Main extends Application {
 	public static Group root;
-	@Override
+	public static Player player = new Player("Black");
+	
 	public void start(Stage primaryStage) {
-        Player player = new Player("Black");
-        
         root = new Group(player.getCamera());
         
 	    SubScene subScene = new SubScene(root, 2000, 2000, true, SceneAntialiasing.BALANCED);
 	    subScene.setFill(Color.AQUAMARINE);
         subScene.setCamera(player.getCamera());
-        initTimer(player);
+        initTimer();
         
 	    // 2D
 	    BorderPane hud = new BorderPane();
@@ -63,7 +62,7 @@ public class Main extends Application {
         primaryStage.show();
 	}
 
-	private void initTimer(Player player) {
+	private void initTimer() {
         AnimationTimer timer = new AnimationTimer() {
             boolean[] keys = player.getPlayerState();
             @Override

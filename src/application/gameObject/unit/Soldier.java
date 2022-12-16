@@ -26,4 +26,10 @@ public class Soldier extends Unit{
 		return this.getImageFill() + " Soldier";
 	}
 
+	@Override
+	public void hit(int damage) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
